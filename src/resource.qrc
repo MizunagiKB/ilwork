@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>res/image-regular.svg</file>
+    <file>res/image-solid.svg</file>
+    <file>res/images-solid.svg</file>
+    <file>res/search-solid.svg</file>
+    <file>res/search-minus-solid.svg</file>
+    <file>res/search-plus-solid.svg</file>
+    <file>res/file-solid.svg</file>
+    <file>res/chart-bar-solid.svg</file>
+    <file>res/eye-solid.svg</file>
+    <file>res/file-export-solid.svg</file>
+    <file>res/fill-solid.svg</file>
+    <file>res/folder-open-solid.svg</file>
+    <file>res/pen-solid.svg</file>
+  </qresource>
+</RCC>

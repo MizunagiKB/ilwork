@@ -1,0 +1,17 @@
+= ilWork
+
+絵を読むことをお手軽に行えるようなツールを想定しています。
+
+元ネタは、以下のPyCON JP 2021のセッションとなります。
+
+- https://speakerdeck.com/hirosaji/the-art-of-reading-illustrations
+
+== 動作確認について
+
+動作確認は、Python 3.8.12で行っています。
+
+現在のものは、Jupyterで動作確認したものをPyQt5を使ってGUI化しただけのものとなります。
+
+
+Photo by Fabian Albert::
+Unsplash: https://unsplash.com/@fabiraw?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText
