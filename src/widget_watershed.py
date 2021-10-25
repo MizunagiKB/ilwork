@@ -161,36 +161,25 @@ class CWidget(QtWidgets.QWidget):
 
         enable = False
 
-        _data = item_curr.data(0, QtCore.Qt.UserRole)
-        if _data is not None:
-            if isinstance(_data, CLayerProperty) is True:
-                layer_data = cast(CLayerProperty, _data)
+        if item_curr is not None:
+            _data = item_curr.data(0, QtCore.Qt.UserRole)
+            if _data is not None:
+                if isinstance(_data, CLayerProperty) is True:
+                    layer_data = cast(CLayerProperty, _data)
 
-                self.ui.text_layer_name.setText(item_curr.text(1))
+                    self.ui.text_layer_name.setText(item_curr.text(1))
 
-                self.__disable_event = True
-                self.ui.slider_r.setValue(layer_data.color.red())
-                self.ui.slider_g.setValue(layer_data.color.green())
-                self.ui.slider_b.setValue(layer_data.color.blue())
-                self.__disable_event = False
-                enable = True
+                    self.__disable_event = True
+                    self.ui.slider_r.setValue(layer_data.color.red())
+                    self.ui.slider_g.setValue(layer_data.color.green())
+                    self.ui.slider_b.setValue(layer_data.color.blue())
+                    self.__disable_event = False
+                    enable = True
 
         self.ui.group_layer_property.setEnabled(enable)
 
-        """
-        if item_curr is not None:
-            o_item = current.data(0, QtCore.Qt.UserRole)
-            if isinstance(o_item, CGPinItem) is True:
-                for o_layer in self.iter_layer():
-                    for o_pin in self.iter_pin(o_layer):
-                        o_pin_data = o_pin.data(0, QtCore.Qt.UserRole)
-                        if o_pin_data is not None:
-                            o_pin_data.setSelected(False)
-
-                o_item.setSelected(True)
-        """
-
     def evt_color(self):
+
         if self.__disable_event is True:
             return
 
@@ -272,8 +261,6 @@ class CWidget(QtWidgets.QWidget):
             self.watershed()
 
     def remove_pin(self):
-
-        print("REROERJJRE")
 
         for item in self.ui.treewidget_layer.selectedItems():
             data = item.data(0, QtCore.Qt.UserRole)
