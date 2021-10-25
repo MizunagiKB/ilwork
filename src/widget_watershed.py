@@ -154,8 +154,8 @@ class CWidget(QtWidgets.QWidget):
         pass
 
     def evt_changed(self):
-        value = self.ui.slider_transparent.value() / 100.0
-        self.watershed(value)
+        alpha = self.ui.slider_transparent.value() / 100.0
+        self.view.set_display(image_view.DISPLAY_DST, alpha)
 
     def evt_current_item_changed(self, item_curr, item_prev):
 
@@ -372,19 +372,18 @@ class CWidget(QtWidgets.QWidget):
         cv2.watershed(cv_image, cvimage_mark)
         cvimage_overlay = self.m_ary_color[np.maximum(cvimage_mark, 0)]
 
-        alpha_1 = 1.0 - alpha
-        alpha_2 = alpha
-
         cvimage_result = cv2.addWeighted(
             cv_image,
-            alpha_1,
+            0.0,
             cvimage_overlay,
-            alpha_2,
+            1.0,
             0.0,
             dtype=cv2.CV_8UC3,
         )
 
+        alpha = self.ui.slider_transparent.value() / 100.0
+
         self.view.dst_image_data.set_image(
             cvimage_result, color_order=image_data.COLOR_ORDER_BGR
         )
-        self.view.set_display(image_view.DISPLAY_DST)
+        self.view.set_display(image_view.DISPLAY_DST, alpha)

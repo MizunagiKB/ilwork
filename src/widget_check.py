@@ -39,7 +39,8 @@ class CWidget(QtWidgets.QWidget):
         pass
 
     def evt_changed(self):
-        pass
+        alpha = self.ui.slider_transparent.value() / 100.0
+        self.view.set_display(image_view.DISPLAY_DST, alpha)
 
     def evt_saliency(self):
 
@@ -57,13 +58,9 @@ class CWidget(QtWidgets.QWidget):
         )
 
         alpha = self.ui.slider_transparent.value() / 100.0
-        alpha_1 = 1.0 - alpha
-        alpha_2 = alpha
 
-        combined = cv2.addWeighted(cv2_image, alpha_1, cv2_image_heatmap, alpha_2, 0)
-
-        self.view.dst_image_data.set_image(combined, color_order=color_order)
-        self.view.set_display(image_view.DISPLAY_DST)
+        self.view.dst_image_data.set_image(cv2_image_heatmap, color_order=color_order)
+        self.view.set_display(image_view.DISPLAY_DST, alpha)
 
     def evt_kmean(self):
 
@@ -79,8 +76,10 @@ class CWidget(QtWidgets.QWidget):
         for _ in range(self.ui.spinbox_number_of_times.value()):
             img_filterd = img_filterd.filter(PIL.ImageFilter.MinFilter())
 
+        alpha = self.ui.slider_transparent.value() / 100.0
+
         self.view.dst_image_data.set_image(img_filterd)
-        self.view.set_display(image_view.DISPLAY_DST)
+        self.view.set_display(image_view.DISPLAY_DST, alpha)
 
     def evt_gradcam(self):
 
@@ -89,14 +88,15 @@ class CWidget(QtWidgets.QWidget):
 
         _, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
 
+        export_image = nnabla_gradcam(self.model, pil_image)
+
         alpha = self.ui.slider_transparent.value() / 100.0
-        export_image = nnabla_gradcam(self.model, pil_image, alpha)
 
         self.view.dst_image_data.set_image(export_image)
-        self.view.set_display(image_view.DISPLAY_DST)
+        self.view.set_display(image_view.DISPLAY_DST, alpha)
 
 
-def nnabla_gradcam(model, pil_image: PIL.Image.Image, alpha: float):
+def nnabla_gradcam(model, pil_image: PIL.Image.Image):
 
     batch_size = 1
     x = nn.Variable((batch_size,) + model.input_shape)
@@ -148,7 +148,7 @@ def nnabla_gradcam(model, pil_image: PIL.Image.Image, alpha: float):
     resize_image = pil_image.convert("RGB")
     base_img = np.asarray(resize_image).astype(np.uint8)
 
-    img_filterd = overlay_images(base_img, heatmap, alpha)
+    img_filterd = overlay_images(base_img, heatmap, 1.0)
 
     return img_filterd
 

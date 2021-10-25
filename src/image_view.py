@@ -1,8 +1,9 @@
 import os
+import io
 from typing import cast
 
 import PIL.Image
-from PyQt5 import QtCore, QtGui, QtSvg, QtWidgets
+from PyQt5 import Qt, QtCore, QtGui, QtSvg, QtWidgets
 
 import image_data
 
@@ -52,7 +53,7 @@ class CScene(QtWidgets.QGraphicsScene):
             for url in event.mimeData().urls():
                 pathname = url.toLocalFile()
                 _, ext = os.path.splitext(pathname)
-                if ext.lower() in ("*.bmp", ".png", ".jpg", ".jpeg"):
+                if ext.lower() in (".bmp", ".png", ".jpg", ".jpeg", ".webp"):
                     self.parent().open(url.toLocalFile())
                     event.acceptProposedAction()
                     break
@@ -183,7 +184,7 @@ class CView(QtWidgets.QGraphicsView):
             cast(PIL.Image.Image, pil_image).save(pathname)
         return result
 
-    def set_display(self, display: int):
+    def set_display(self, display: int, alpha: float = 0.5):
         self.clear_pixmap()
 
         check_src = False
@@ -199,20 +200,32 @@ class CView(QtWidgets.QGraphicsView):
                 check_src = True
 
         elif display == DISPLAY_DST:
-            data = self.__dst_image_data.get_pixmap()
-            if data is None:
-                pass
-            elif isinstance(data, QtGui.QPixmap) is True:
-                self.__pix_item.setPixmap(data)
+            res_src, im_src = self.__src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+            res_dst, im_dst = self.__dst_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+            if all([res_src, res_dst]) is False:
+
+                pix_data = self.__dst_image_data.get_pixmap()
+                if pix_data is not None:
+                    renderer = QtSvg.QSvgRenderer(pix_data.encode("utf-8"))
+                    self.__svg_item.setSharedRenderer(renderer)
+                    self.__svg_item.setFlags(QtWidgets.QGraphicsItem.ItemClipsToShape)
+                    self.__svg_item.setCacheMode(QtWidgets.QGraphicsItem.NoCache)
+                    self.__svg_item.setZValue(0)
+                    self.__svg_item.setParentItem(self.pixmap_root)
+                    check_dst = True
+
+            elif isinstance(im_dst, PIL.Image.Image) is True:
+
+                im = PIL.Image.blend(im_src, im_dst, alpha)
+
+                io_bytes = io.BytesIO()
+                im.save(io_bytes, "bmp")
+                io_bytes.seek(0)
+                item = Qt.QPixmap()
+                item.loadFromData(io_bytes.read())
+
+                self.__pix_item.setPixmap(item)
                 self.__pix_item.setParentItem(self.pixmap_root)
-                check_dst = True
-            else:
-                renderer = QtSvg.QSvgRenderer(data.encode("utf-8"))
-                self.__svg_item.setSharedRenderer(renderer)
-                self.__svg_item.setFlags(QtWidgets.QGraphicsItem.ItemClipsToShape)
-                self.__svg_item.setCacheMode(QtWidgets.QGraphicsItem.NoCache)
-                self.__svg_item.setZValue(0)
-                self.__svg_item.setParentItem(self.pixmap_root)
                 check_dst = True
 
         enabled = any([check_src, check_dst])

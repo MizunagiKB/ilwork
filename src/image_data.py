@@ -44,16 +44,15 @@ class CImageData(object):
         rgb_image = self.pil_image.convert("RGB")
 
         if image_type == IMAGE_TYPE_PIL:
-            return True, self.pil_image
+            return True, rgb_image
 
         elif image_type == IMAGE_TYPE_OPENCV:
-            np_image = np.asarray(self.pil_image.convert("RGB"))
+            np_image = np.asarray(rgb_image)
             if color_order == COLOR_ORDER_BGR:
                 np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
             return True, np_image
 
         elif image_type == IMAGE_TYPE_NNABLA:
-            rgb_image = self.pil_image.convert("RGB")
             np_image = np.asarray(rgb_image)
             if color_order == COLOR_ORDER_BGR:
                 np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
