@@ -129,11 +129,12 @@ def nnabla_gradcam(model, pil_image: PIL.Image.Image, alpha: float):
 
     predicted_labels = np.argsort(-pred.d[0])
     for i, predicted_label in enumerate(predicted_labels[:15]):
-        print(
-            "Top {:d}, Label index: {:d},  Label name: {:s}".format(
-                i + 1, predicted_label, model.category_names[predicted_label]
-            )
-        )
+        # print(
+        #     "Top {:d}, Label index: {:d},  Label name: {:s}".format(
+        #         i + 1, predicted_label, model.category_names[predicted_label]
+        #     )
+        # )
+        pass
 
     for k, v in vgg_variables.items():
         if "VGG16/" in k:
@@ -157,7 +158,8 @@ def gradcam(middle_layer):
     conv_layer_grad = middle_layer.g
     pooled_grad = conv_layer_grad.mean(axis=(0, 2, 3), keepdims=True)
     heatmap = pooled_grad * conv_layer_output
-    heatmap = np.maximum(heatmap, 0)  # ReLU
+    # ReLU
+    heatmap = np.maximum(heatmap, 0)
     heatmap = heatmap.mean(axis=(0, 1))
     max_v, min_v = np.max(heatmap), np.min(heatmap)
     if max_v != min_v:
