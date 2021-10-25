@@ -1,3 +1,4 @@
+from typing import cast
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 
 import cv2
@@ -77,6 +78,7 @@ class CGPinItem(QtWidgets.QGraphicsRectItem):
 class CWidget(QtWidgets.QWidget):
     view: image_view.CView = None
     watershed_mark: np.ndarray = None
+    __disable_event: bool = True
 
     def __init__(self, _view: image_view.CView):
         super(CWidget, self).__init__()
@@ -86,7 +88,16 @@ class CWidget(QtWidgets.QWidget):
         self.ui = ui.frm_watershed.Ui_Form()
         self.ui.setupUi(self)
 
+        self.ui.group_layer_property.setEnabled(False)
+
         self.ui.slider_transparent.valueChanged.connect(self.evt_changed)
+        self.ui.slider_r.valueChanged.connect(self.evt_color)
+        self.ui.slider_g.valueChanged.connect(self.evt_color)
+        self.ui.slider_b.valueChanged.connect(self.evt_color)
+
+        self.ui.treewidget_layer.currentItemChanged.connect(
+            self.evt_current_item_changed
+        )
 
     def custom_init(self):
 
@@ -145,6 +156,63 @@ class CWidget(QtWidgets.QWidget):
     def evt_changed(self):
         value = self.ui.slider_transparent.value() / 100.0
         self.watershed(value)
+
+    def evt_current_item_changed(self, item_curr, item_prev):
+
+        enable = False
+
+        _data = item_curr.data(0, QtCore.Qt.UserRole)
+        if _data is not None:
+            if isinstance(_data, CLayerProperty) is True:
+                layer_data = cast(CLayerProperty, _data)
+
+                self.ui.text_layer_name.setText(item_curr.text(1))
+
+                self.__disable_event = True
+                self.ui.slider_r.setValue(layer_data.color.red())
+                self.ui.slider_g.setValue(layer_data.color.green())
+                self.ui.slider_b.setValue(layer_data.color.blue())
+                self.__disable_event = False
+                enable = True
+
+        self.ui.group_layer_property.setEnabled(enable)
+
+        """
+        if item_curr is not None:
+            o_item = current.data(0, QtCore.Qt.UserRole)
+            if isinstance(o_item, CGPinItem) is True:
+                for o_layer in self.iter_layer():
+                    for o_pin in self.iter_pin(o_layer):
+                        o_pin_data = o_pin.data(0, QtCore.Qt.UserRole)
+                        if o_pin_data is not None:
+                            o_pin_data.setSelected(False)
+
+                o_item.setSelected(True)
+        """
+
+    def evt_color(self):
+        if self.__disable_event is True:
+            return
+
+        layer_item = self.get_current_layer()
+
+        if layer_item is not None:
+            _data = layer_item.data(0, QtCore.Qt.UserRole)
+            if _data is not None:
+                if isinstance(_data, CLayerProperty) is True:
+                    layer_data = cast(CLayerProperty, _data)
+
+                    color = Qt.QColor(
+                        self.ui.slider_r.value(),
+                        self.ui.slider_g.value(),
+                        self.ui.slider_b.value(),
+                    )
+                    layer_data.set_color(color)
+
+                    # self.evt_current_item_changed(layer_item, layer_item)
+                    self.update_color()
+                    self.update_pin()
+                    self.watershed()
 
     def clear_mark(self):
         result, cv2_image = self.view.src_image_data.get_image(
@@ -264,7 +332,7 @@ class CWidget(QtWidgets.QWidget):
         self.update_ary_color(list_color)
 
     # ------------------------------------------------------------------------
-    def get_current_layer(self):
+    def get_current_layer(self) -> QtWidgets.QTreeWidgetItem:
 
         widget = self.ui.treewidget_layer
 

@@ -151,9 +151,6 @@ def nnabla_gradcam(model, pil_image: PIL.Image.Image, alpha: float):
 
     return img_filterd
 
-    # ix = PIL.Image.fromarray(export_image)
-    # ix.save("export.png", "png")
-
 
 def gradcam(middle_layer):
     conv_layer_output = middle_layer.d
