@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 import ui.frm_potrace
 
@@ -11,6 +11,7 @@ import image_view
 
 class CWidget(QtWidgets.QWidget):
     view: image_view.CView = None
+    prev_background_brush: QtGui.QBrush = None
 
     def __init__(self, _view: image_view.CView):
         super(CWidget, self).__init__()
@@ -23,10 +24,25 @@ class CWidget(QtWidgets.QWidget):
         self.ui.pushButton.pressed.connect(self.evt_trace)
 
     def custom_init(self):
-        pass
+
+        self.prev_background_brush = self.view.backgroundBrush()
+
+        color_w = QtGui.QColor(255, 255, 255)
+        color_g = QtGui.QColor(220, 220, 220)
+
+        tilePixmap = QtGui.QPixmap(64, 64)
+        tilePixmap.fill(color_w)
+
+        tilePainter = QtGui.QPainter(tilePixmap)
+        tilePainter.fillRect(0, 0, 32, 32, color_g)
+        tilePainter.fillRect(32, 32, 32, 32, color_g)
+        tilePainter.end()
+
+        self.view.setBackgroundBrush(QtGui.QBrush(tilePixmap))
 
     def custom_term(self):
-        pass
+        if self.prev_background_brush is not None:
+            self.view.setBackgroundBrush(self.prev_background_brush)
 
     def evt_trace(self):
 
