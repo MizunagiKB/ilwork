@@ -2,7 +2,7 @@ PYTHON = python3
 PYUIC = pyuic5
 PYRCC = pyrcc5
 
-SRCS = src/ui/frm_main.ui src/ui/frm_potrace.ui src/ui/frm_watershed.ui src/ui/frm_check.ui src/resource.qrc
+SRCS = src/ui/frm_main.ui src/ui/frm_potrace.ui src/ui/frm_watershed.ui src/ui/frm_check.ui src/ui/frm_x_test.ui src/resource.qrc
 UIDSTS = $(SRCS:%.ui=%.py)
 RCDSTS = $(SRCS:%.qrc=%.py)
 

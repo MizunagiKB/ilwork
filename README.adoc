@@ -13,5 +13,24 @@
 現在のものは、Jupyterで動作確認したものをPyQt5を使ってGUI化しただけのものとなります。
 
 
+== 使用しているプログラムについて
+
+PyQt5::
+- https://www.riverbankcomputing.com/
+
+Python Potrace::
+- https://github.com/tatarize/potrace
+- https://github.com/tatarize/potrace-cli
+
+OpenCV Python::
+- https://github.com/opencv/opencv-python
+
+Neural Network Libraries::
+- https://github.com/sony/nnabla
+
+
+
+unittestで使用している画像はUnsplashのものを利用しています。
+
 Photo by Fabian Albert::
 Unsplash: https://unsplash.com/@fabiraw?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText

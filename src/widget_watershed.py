@@ -140,7 +140,6 @@ class CWidget(QtWidgets.QWidget):
             self.watershed()
 
     def custom_mouseReleaseEvent(self, event) -> bool:
-        # print("mouseReleaseEvent", event)
         pass
 
     def evt_changed(self):

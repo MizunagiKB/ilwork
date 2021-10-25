@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>res/cubes-solid.svg</file>
+    <file>res/vial-solid.svg</file>
     <file>res/image-regular.svg</file>
     <file>res/image-solid.svg</file>
     <file>res/images-solid.svg</file>

@@ -9,9 +9,11 @@ import image_view
 import widget_potrace
 import widget_watershed
 import widget_check
+import widget_x_test
 
 
 class CWidgetManager(object):
+    # 開発したプログラムにUIをつけて動作させるためのクラス
     window: QtWidgets.QMainWindow = None
     items: Dict[QtWidgets.QAction, QtWidgets.QWidget] = None
 
@@ -49,29 +51,26 @@ class CMainWindow(QtWidgets.QMainWindow):
         self.ui = ui.frm_main.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.view = image_view.CView()
+        self.view = image_view.CView(self)
         self.setCentralWidget(self.view)
 
         self.ui.ac_file_new.setEnabled(False)
         self.ui.ac_file_open.triggered.connect(self.evt_file_open)
         self.ui.ac_file_export.triggered.connect(self.evt_file_export)
 
-        # widgets setup
+        # for CWidgetManager
+        # ----
         self.ui.ac_potrace.triggered.connect(self.evt_potrace)
         self.ui.ac_watershed.triggered.connect(self.evt_watershed)
         self.ui.ac_check.triggered.connect(self.evt_check)
+        self.ui.ac_widget_x_test.triggered.connect(self.evt_widget_x_test)
 
         self.widgets = CWidgetManager(self)
         self.widgets.items[self.ui.ac_potrace] = widget_potrace.CWidget(self.view)
         self.widgets.items[self.ui.ac_watershed] = widget_watershed.CWidget(self.view)
         self.widgets.items[self.ui.ac_check] = widget_check.CWidget(self.view)
-
-        self.ui.ac_image_src.triggered.connect(self.evt_image_src)
-        self.ui.ac_image_dst.triggered.connect(self.evt_image_dst)
-
-        self.ui.ac_zoom_reset.triggered.connect(self.evt_zoom_reset)
-        self.ui.ac_zoom_in.triggered.connect(self.evt_zoom_in)
-        self.ui.ac_zoom_out.triggered.connect(self.evt_zoom_out)
+        self.widgets.items[self.ui.ac_widget_x_test] = widget_x_test.CWidget(self.view)
+        # ----
 
     def evt_file_open(self):
 
@@ -95,7 +94,7 @@ class CMainWindow(QtWidgets.QMainWindow):
 
         o_dlg = QtWidgets.QFileDialog(self)
         o_dlg.setWindowModality(QtCore.Qt.WindowModal)
-        o_dlg.setNameFilter("Image file (*.bmp *.png *.jpg *.jpeg)")
+        o_dlg.setNameFilter("Image file (*.bmp *.eps *.png *.jpg *.jpeg *.webp)")
         o_dlg.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         o_dlg.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         o_dlg.setModal(True)
@@ -103,7 +102,10 @@ class CMainWindow(QtWidgets.QMainWindow):
         def signal_finished(result):
             if result == QtWidgets.QDialog.Accepted:
                 for pathname in o_dlg.selectedFiles():
-                    self.view.export(pathname)
+                    result = self.view.export(pathname)
+                    if result is False:
+                        dlg_err = QtWidgets.QErrorMessage()
+                        dlg_err.showMessage("Failure")
                     break
 
         o_dlg.finished.connect(signal_finished)
@@ -118,24 +120,8 @@ class CMainWindow(QtWidgets.QMainWindow):
     def evt_check(self):
         self.widgets.set(self.ui.ac_check)
 
-    def evt_image_src(self):
-        self.ui.ac_image_src.setChecked(True)
-        self.ui.ac_image_src.setChecked(False)
-        self.view.set_display(image_view.DISPLAY_SRC)
-
-    def evt_image_dst(self):
-        self.ui.ac_image_dst.setChecked(False)
-        self.ui.ac_image_dst.setChecked(True)
-        self.view.set_display(image_view.DISPLAY_DST)
-
-    def evt_zoom_reset(self):
-        self.view.resetTransform()
-
-    def evt_zoom_in(self):
-        self.view.scale(2.0, 2.0)
-
-    def evt_zoom_out(self):
-        self.view.scale(0.5, 0.5)
+    def evt_widget_x_test(self):
+        self.widgets.set(self.ui.ac_widget_x_test)
 
 
 def main():

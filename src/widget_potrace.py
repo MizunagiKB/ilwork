@@ -10,9 +10,9 @@ import image_view
 
 
 class CWidget(QtWidgets.QWidget):
-    view: QtWidgets.QGraphicsView
+    view: image_view.CView = None
 
-    def __init__(self, _view: QtWidgets.QGraphicsScene):
+    def __init__(self, _view: image_view.CView):
         super(CWidget, self).__init__()
 
         self.view = _view

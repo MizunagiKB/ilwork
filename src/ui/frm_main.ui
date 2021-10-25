@@ -131,6 +131,8 @@
    <addaction name="ac_potrace"/>
    <addaction name="ac_watershed"/>
    <addaction name="ac_check"/>
+   <addaction name="separator"/>
+   <addaction name="ac_widget_x_test"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -152,8 +154,8 @@
    <addaction name="ac_image_dst"/>
    <addaction name="separator"/>
    <addaction name="ac_zoom_reset"/>
-   <addaction name="ac_zoom_in"/>
    <addaction name="ac_zoom_out"/>
+   <addaction name="ac_zoom_in"/>
   </widget>
   <action name="ac_potrace">
    <property name="checkable">
@@ -191,7 +193,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resource.qrc">
-     <normaloff>:/icons/res/chart-bar-solid.svg</normaloff>:/icons/res/chart-bar-solid.svg</iconset>
+     <normaloff>:/icons/res/vial-solid.svg</normaloff>:/icons/res/vial-solid.svg</iconset>
    </property>
    <property name="text">
     <string>Check</string>
@@ -314,6 +316,18 @@
    </property>
    <property name="shortcut">
     <string>Space</string>
+   </property>
+  </action>
+  <action name="ac_widget_x_test">
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/res/cubes-solid.svg</normaloff>:/icons/res/cubes-solid.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Test</string>
+   </property>
+   <property name="toolTip">
+    <string>Test</string>
    </property>
   </action>
  </widget>

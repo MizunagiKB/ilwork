@@ -59,6 +59,7 @@ class CScene(QtWidgets.QGraphicsScene):
 
 
 class CView(QtWidgets.QGraphicsView):
+    __main_window: QtWidgets.QMainWindow = None
     __src_image_data: image_data.CImageData = None
     __dst_image_data: image_data.CImageData = None
     __pix_item: CGraphicsItem = None
@@ -68,8 +69,17 @@ class CView(QtWidgets.QGraphicsView):
 
     hand_dragging: bool = False
 
-    def __init__(self):
+    def __init__(self, _main_window: QtWidgets.QMainWindow):
         super(CView, self).__init__()
+
+        self.__main_window = _main_window
+
+        self.__main_window.ui.ac_image_src.triggered.connect(self.evt_image_src)
+        self.__main_window.ui.ac_image_dst.triggered.connect(self.evt_image_dst)
+
+        self.__main_window.ui.ac_zoom_reset.triggered.connect(self.evt_zoom_reset)
+        self.__main_window.ui.ac_zoom_out.triggered.connect(self.evt_zoom_out)
+        self.__main_window.ui.ac_zoom_in.triggered.connect(self.evt_zoom_in)
 
         self.__src_image_data = image_data.CImageData()
         self.__dst_image_data = image_data.CImageData()
@@ -93,12 +103,12 @@ class CView(QtWidgets.QGraphicsView):
         self.marker_root = QtWidgets.QGraphicsRectItem()
         self.scene().addItem(self.marker_root)
 
-        o_pixmap = QtGui.QPixmap(32, 32)
-        o_pixmap.fill(QtGui.QColor(32, 32, 32))
+        o_pixmap = QtGui.QPixmap(64, 64)
+        o_pixmap.fill(QtGui.QColor(64, 64, 64))
         self.setBackgroundBrush(QtGui.QBrush(o_pixmap))
 
         self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-        self.setFocus()
+        self.set_display(DISPLAY_SRC)
 
     @property
     def src_image_data(self) -> image_data.CImageData:
@@ -125,6 +135,21 @@ class CView(QtWidgets.QGraphicsView):
         self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
         self.hand_dragging = False
 
+    def evt_image_src(self):
+        self.set_display(DISPLAY_SRC)
+
+    def evt_image_dst(self):
+        self.set_display(DISPLAY_DST)
+
+    def evt_zoom_reset(self):
+        self.resetTransform()
+
+    def evt_zoom_in(self):
+        self.scale(2.0, 2.0)
+
+    def evt_zoom_out(self):
+        self.scale(0.5, 0.5)
+
     def clear_pixmap(self):
         for o in self.pixmap_root.childItems():
             o.setParentItem(None)
@@ -141,6 +166,7 @@ class CView(QtWidgets.QGraphicsView):
             return False
 
         self.__src_image_data.from_file(pathname)
+        self.__dst_image_data.from_file(pathname)
 
         self.clear_pixmap()
 
@@ -155,15 +181,22 @@ class CView(QtWidgets.QGraphicsView):
         result, pil_image = self.__dst_image_data.get_image(image_data.IMAGE_TYPE_PIL)
         if result is True:
             cast(PIL.Image.Image, pil_image).save(pathname)
+        return result
 
     def set_display(self, display: int):
         self.clear_pixmap()
 
+        check_src = False
+        check_dst = False
+
         if display == DISPLAY_SRC:
             data = self.__src_image_data.get_pixmap()
-            if data is not None:
+            if data is None:
+                pass
+            else:
                 self.__pix_item.setPixmap(data)
                 self.__pix_item.setParentItem(self.pixmap_root)
+                check_src = True
 
         elif display == DISPLAY_DST:
             data = self.__dst_image_data.get_pixmap()
@@ -172,6 +205,7 @@ class CView(QtWidgets.QGraphicsView):
             elif isinstance(data, QtGui.QPixmap) is True:
                 self.__pix_item.setPixmap(data)
                 self.__pix_item.setParentItem(self.pixmap_root)
+                check_dst = True
             else:
                 renderer = QtSvg.QSvgRenderer(data.encode("utf-8"))
                 self.__svg_item.setSharedRenderer(renderer)
@@ -179,5 +213,17 @@ class CView(QtWidgets.QGraphicsView):
                 self.__svg_item.setCacheMode(QtWidgets.QGraphicsItem.NoCache)
                 self.__svg_item.setZValue(0)
                 self.__svg_item.setParentItem(self.pixmap_root)
+                check_dst = True
+
+        enabled = any([check_src, check_dst])
+        self.__main_window.ui.ac_zoom_reset.setEnabled(enabled)
+        self.__main_window.ui.ac_zoom_out.setEnabled(enabled)
+        self.__main_window.ui.ac_zoom_in.setEnabled(enabled)
+
+        self.__main_window.ui.ac_image_src.setEnabled(enabled)
+        self.__main_window.ui.ac_image_dst.setEnabled(enabled)
+
+        self.__main_window.ui.ac_image_src.setChecked(check_src)
+        self.__main_window.ui.ac_image_dst.setChecked(check_dst)
 
         self.setFocus()
