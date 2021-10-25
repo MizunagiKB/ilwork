@@ -1,9 +1,9 @@
-import io
-from PyQt5 import QtWidgets, QtSvg
+from PyQt5 import QtWidgets
 
 import ui.frm_potrace
-from lib.potrace import Bitmap
-from lib.potrace import backend_svg
+
+from deps.potrace import Bitmap
+from deps.potrace import backend_svg
 
 import image_data
 import image_view
