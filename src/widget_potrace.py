@@ -51,10 +51,10 @@ class CWidget(QtWidgets.QWidget):
         bm = Bitmap(pil_image, 0.5)
 
         plist = bm.trace(
-            turdsize=2,
-            turnpolicy="minority",
-            alphamax=1,
-            opticurve=False,
+            turdsize=self.ui.spin_turdsize.value(),
+            turnpolicy=self.ui.combo_turnpolicy.currentIndex(),
+            alphamax=self.ui.spin_alphamax.value() / 10.0,
+            opticurve=self.ui.check_opticurve.isChecked(),
             opttolerance=0.2,
         )
 

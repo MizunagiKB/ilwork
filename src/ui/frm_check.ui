@@ -62,13 +62,20 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>OpenCV</string>
+      <string>OpenCV/Saliency</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QPushButton" name="push_saliency">
+       <widget class="QPushButton" name="push_saliency_sr">
         <property name="text">
-         <string>Saliency</string>
+         <string>Saliency SpectralResidual</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="push_saliency_fg">
+        <property name="text">
+         <string>Saliency FineGrained</string>
         </property>
        </widget>
       </item>
