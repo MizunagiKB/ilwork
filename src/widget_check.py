@@ -61,12 +61,18 @@ class CWidget(QtWidgets.QWidget):
         _, saliency_map = saliency.computeSaliency(cv2_image)
 
         im_gray = (saliency_map * 255).astype("uint8")
-        # px, py, img = brightness(im_gray)
-        # im_gray = img
-
         cv2_image_heatmap = cv2.applyColorMap(im_gray, cv2.COLORMAP_JET)
 
-        # cv2_image_heatmap = cv2.circle(cv2_image, (px, py), 100, (255, 0, 0), 20)
+        if False:
+            h, w = cv2_image.shape[:2]
+            px, py, _ = brightness(im_gray)
+            # cv2_image_heatmap = cv2.circle(cv2_image, (px, py), 100, (255, 0, 0), 20)
+            cv2_image_heatmap = cv2.circle(
+                cv2_image, (px, py), w // 10, (0, 0, 0), (w // 50)
+            )
+            cv2_image_heatmap = cv2.circle(
+                cv2_image_heatmap, (px, py), w // 10, (0, 0, 255), (w // 100)
+            )
 
         alpha = self.ui.slider_transparent.value() / 100.0
 

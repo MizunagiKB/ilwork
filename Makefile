@@ -23,3 +23,7 @@ clean:
 .PHONY: run
 run: all
 	$(PYTHON) src/ilwork.py
+
+.PHONY: build
+build: all
+	pushd src && python setup.py py2app -A && popd
