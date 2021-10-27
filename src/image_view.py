@@ -179,9 +179,20 @@ class CView(QtWidgets.QGraphicsView):
         return True
 
     def export(self, pathname: str) -> bool:
-        result, pil_image = self.__dst_image_data.get_image(image_data.IMAGE_TYPE_PIL)
-        if result is True:
-            cast(PIL.Image.Image, pil_image).save(pathname)
+        _, ext = os.path.splitext(pathname)
+        if ext.lower() == ".svg":
+            result = True
+            svg_image = self.__dst_image_data.svg_image
+            if svg_image != None:
+                with open(pathname, "w") as f:
+                    f.write(svg_image)
+                    result = True
+        else:
+            result, pil_image = self.__dst_image_data.get_image(
+                image_data.IMAGE_TYPE_PIL
+            )
+            if result is True:
+                cast(PIL.Image.Image, pil_image).save(pathname)
         return result
 
     def set_display(self, display: int, alpha: float = 0.5):

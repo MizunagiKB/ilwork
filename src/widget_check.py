@@ -18,6 +18,7 @@ import ui.frm_check
 class CWidget(QtWidgets.QWidget):
     view: image_view.CView = None
     model: VGG16 = None
+    last_saliency = None
 
     def __init__(self, _view: image_view.CView):
         super(CWidget, self).__init__()
@@ -28,6 +29,9 @@ class CWidget(QtWidgets.QWidget):
         self.ui.setupUi(self)
 
         self.ui.slider_transparent.valueChanged.connect(self.evt_changed)
+
+        self.ui.combo_colormap.currentIndexChanged.connect(self.evt_change_colormap)
+        self.ui.combo_brightness.currentIndexChanged.connect(self.evt_change_brightness)
 
         self.ui.push_saliency_sr.pressed.connect(self.evt_saliency_sr)
         self.ui.push_saliency_fg.pressed.connect(self.evt_saliency_fg)
@@ -44,11 +48,19 @@ class CWidget(QtWidgets.QWidget):
         alpha = self.ui.slider_transparent.value() / 100.0
         self.view.set_display(image_view.DISPLAY_DST, alpha)
 
+    def evt_change_colormap(self):
+        self.processing_saliency(self.last_saliency)
+
+    def evt_change_brightness(self):
+        self.processing_saliency(self.last_saliency)
+
     def evt_saliency_sr(self):
-        self.processing_saliency(cv2.saliency.StaticSaliencySpectralResidual_create())
+        self.last_saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+        self.processing_saliency(self.last_saliency)
 
     def evt_saliency_fg(self):
-        self.processing_saliency(cv2.saliency.StaticSaliencyFineGrained_create())
+        self.last_saliency = cv2.saliency.StaticSaliencyFineGrained_create()
+        self.processing_saliency(self.last_saliency)
 
     def processing_saliency(self, saliency: Any):
 
@@ -61,18 +73,29 @@ class CWidget(QtWidgets.QWidget):
         _, saliency_map = saliency.computeSaliency(cv2_image)
 
         im_gray = (saliency_map * 255).astype("uint8")
-        cv2_image_heatmap = cv2.applyColorMap(im_gray, cv2.COLORMAP_JET)
 
-        if False:
+        # combo_brightness
+        cv2_image_heatmap = cv2.applyColorMap(
+            im_gray, self.ui.combo_colormap.currentIndex()
+        )
+
+        if self.ui.combo_brightness.currentText() != "None":
             h, w = cv2_image.shape[:2]
             px, py, _ = brightness(im_gray)
             # cv2_image_heatmap = cv2.circle(cv2_image, (px, py), 100, (255, 0, 0), 20)
-            cv2_image_heatmap = cv2.circle(
-                cv2_image, (px, py), w // 10, (0, 0, 0), (w // 50)
-            )
-            cv2_image_heatmap = cv2.circle(
-                cv2_image_heatmap, (px, py), w // 10, (0, 0, 255), (w // 100)
-            )
+
+            if self.ui.combo_brightness.currentText() == "Mark":
+                target_image = cv2_image_heatmap
+
+                cv2_image_heatmap = cv2.circle(
+                    target_image, (px, py), w // 10, (0, 0, 0), (w // 50)
+                )
+                cv2_image_heatmap = cv2.circle(
+                    target_image, (px, py), w // 10, (0, 0, 255), (w // 100)
+                )
+
+            elif self.ui.combo_brightness.currentText() == "Brightness":
+                target_image = im_gray
 
         alpha = self.ui.slider_transparent.value() / 100.0
 

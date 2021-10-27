@@ -28,6 +28,8 @@ OpenCV Python::
 Neural Network Libraries::
 - https://github.com/sony/nnabla
 
+画像のどの領域が最も明るいか調べる関数（WATLAB）::
+- https://watlab-blog.com/2019/07/27/movie-saliency/
 
 
 unittestで使用している画像はUnsplashのものを利用しています。

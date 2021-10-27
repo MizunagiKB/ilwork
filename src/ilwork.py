@@ -94,7 +94,10 @@ class CMainWindow(QtWidgets.QMainWindow):
 
         o_dlg = QtWidgets.QFileDialog(self)
         o_dlg.setWindowModality(QtCore.Qt.WindowModal)
-        o_dlg.setNameFilter("Image file (*.bmp *.eps *.png *.jpg *.jpeg *.webp)")
+        if self.ui.ac_potrace.isChecked() is True:
+            o_dlg.setNameFilter("SVG file (*.svg)")
+        else:
+            o_dlg.setNameFilter("Image file (*.bmp *.eps *.png *.jpg *.jpeg *.webp)")
         o_dlg.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         o_dlg.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         o_dlg.setModal(True)

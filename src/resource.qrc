@@ -16,4 +16,28 @@
     <file>res/folder-open-solid.svg</file>
     <file>res/pen-solid.svg</file>
   </qresource>
+  <qresource prefix="colorscales">
+    <file>res/colorscale_autumn.jpg</file>
+    <file>res/colorscale_bone.jpg</file>
+    <file>res/colorscale_cividis.jpg</file>
+    <file>res/colorscale_cool.jpg</file>
+    <file>res/colorscale_deepgreen.jpg</file>
+    <file>res/colorscale_hot.jpg</file>
+    <file>res/colorscale_hsv.jpg</file>
+    <file>res/colorscale_inferno.jpg</file>
+    <file>res/colorscale_jet.jpg</file>
+    <file>res/colorscale_magma.jpg</file>
+    <file>res/colorscale_ocean.jpg</file>
+    <file>res/colorscale_parula.jpg</file>
+    <file>res/colorscale_pink.jpg</file>
+    <file>res/colorscale_plasma.jpg</file>
+    <file>res/colorscale_rainbow.jpg</file>
+    <file>res/colorscale_spring.jpg</file>
+    <file>res/colorscale_summer.jpg</file>
+    <file>res/colorscale_turbo.jpg</file>
+    <file>res/colorscale_twilight_shifted.jpg</file>
+    <file>res/colorscale_twilight.jpg</file>
+    <file>res/colorscale_viridis.jpg</file>
+    <file>res/colorscale_winter.jpg</file>
+  </qresource>
 </RCC>

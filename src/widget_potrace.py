@@ -48,7 +48,10 @@ class CWidget(QtWidgets.QWidget):
 
         _, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
 
-        bm = Bitmap(pil_image, 0.5)
+        blacklevel = (
+            self.ui.slider_blacklevel.value() / self.ui.slider_blacklevel.maximum()
+        )
+        bm = Bitmap(pil_image, blacklevel)
 
         plist = bm.trace(
             turdsize=self.ui.spin_turdsize.value(),
