@@ -14,6 +14,8 @@ import image_data
 import image_view
 import ui.frm_check
 
+import deps.util_cv2
+
 
 class CWidget(QtWidgets.QWidget):
     view: image_view.CView = None
@@ -63,6 +65,8 @@ class CWidget(QtWidgets.QWidget):
         self.processing_saliency(self.last_saliency)
 
     def processing_saliency(self, saliency: Any):
+        if saliency is None:
+            return
 
         color_order = image_data.COLOR_ORDER_BGR
 
@@ -81,8 +85,10 @@ class CWidget(QtWidgets.QWidget):
 
         if self.ui.combo_brightness.currentText() != "None":
             h, w = cv2_image.shape[:2]
-            px, py, _ = brightness(im_gray)
-            # cv2_image_heatmap = cv2.circle(cv2_image, (px, py), 100, (255, 0, 0), 20)
+            px, py, image_mean = deps.util_cv2.brightness(im_gray)
+
+            if self.ui.combo_brightness.currentText() == "Mean":
+                cv2_image_heatmap = image_mean
 
             if self.ui.combo_brightness.currentText() == "Mark":
                 target_image = cv2_image_heatmap
@@ -224,47 +230,3 @@ def overlay_images(base_img, overlay_img, overlay_coef=1.0):
     ret_img = ret_img.astype("uint8")
     ret_img = cv2.cvtColor(ret_img, cv2.COLOR_BGR2RGB)
     return ret_img
-
-
-# 画像の中でどこが最も明るいかを調べる関数
-# https://watlab-blog.com/2019/07/27/movie-saliency/
-def brightness(img):
-    h, w = img.shape[:2]  # グレースケール画像のサイズ取得（カラーは3）
-    x = int(w / 20)  # 領域の横幅
-    y = int(h / 20)  # 領域の高さ
-    x_step = x  # 領域の横方向へのずらし幅
-    y_step = y  # 領域の縦方向へのずらし幅
-    x0 = 0  # 領域の初期値x成分
-    y0 = 0  # 領域の初期値y成分
-    j = 0  # 縦方向のループ指標を初期化
-
-    latest = 0  # 最新の平均輝度値
-    coordinate = [0, 0]  # 最も明るい領域の座標値
-
-    # 縦方向の走査を行うループ
-    while y + (j * y_step) < h:
-        i = 0  # 横方向の走査が終わる度にiを初期化
-        ys = y0 + (j * y_step)  # 高さ方向の始点位置を更新
-        yf = y + (j * y_step)  # 高さ方向の終点位置を更新
-
-        # 横方向の走査をするループ
-        while x + (i * x_step) < w:
-            roi = img[ys:yf, x0 + (i * x_step) : x + (i * x_step)]  # 元画像から領域をroiで抽出
-
-            # ここからが領域に対する画像処理
-            # 領域毎に平均輝度を算出し、これまでの平均値と比べ大きかったらlatestを更新
-            ave = np.mean(roi).astype("uint8")
-            if latest < ave:
-                latest = ave
-                coordinate = [i, j]
-            else:
-                pass
-            img[ys:yf, x0 + (i * x_step) : x + (i * x_step)] = np.full(roi.shape, ave)
-            # ここまでが領域に対する画像処理
-
-            i = i + 1  # whileループの条件がFalse（横方向の端になる）まで、iを増分
-        j = j + 1  # whileループの条件がFalse（縦方向の端になる）まで、jを増分
-    # 最も明るい領域の中心座標を計算
-    px = int(coordinate[0] * x_step + (x / 2))
-    py = int(coordinate[1] * y_step + (y / 2))
-    return px, py, img

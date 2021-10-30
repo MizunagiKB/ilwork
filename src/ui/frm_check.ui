@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>417</height>
+    <width>448</width>
+    <height>444</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>check</string>
@@ -68,14 +74,14 @@
       <item>
        <widget class="QPushButton" name="push_saliency_sr">
         <property name="text">
-         <string>Saliency SpectralResidual</string>
+         <string>SpectralResidual</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="push_saliency_fg">
         <property name="text">
-         <string>Saliency FineGrained</string>
+         <string>FineGrained</string>
         </property>
        </widget>
       </item>
@@ -101,7 +107,7 @@
           </property>
           <item>
            <property name="text">
-            <string>COLORMAP_AUTUMN</string>
+            <string>AUTUMN</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -110,7 +116,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_BONE</string>
+            <string>BONE</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -119,7 +125,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_JET</string>
+            <string>JET</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -128,7 +134,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_WINTER</string>
+            <string>WINTER</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -137,7 +143,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_RAINBOW</string>
+            <string>RAINBOW</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -146,7 +152,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP__OCEAN</string>
+            <string>OCEAN</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -155,7 +161,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_SUMMER</string>
+            <string>SUMMER</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -164,7 +170,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_SPRING</string>
+            <string>SPRING</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -173,7 +179,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_COOL</string>
+            <string>COOL</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -182,7 +188,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_HSV</string>
+            <string>HSV</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -191,7 +197,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_PINK</string>
+            <string>PINK</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -200,7 +206,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_HOT</string>
+            <string>HOT</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -209,7 +215,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_PARULA</string>
+            <string>PARULA</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -218,7 +224,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_MAGMA</string>
+            <string>MAGMA</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -227,7 +233,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_INFERNO</string>
+            <string>INFERNO</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -236,7 +242,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_PLASMA</string>
+            <string>PLASMA</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -245,7 +251,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_VIRIDIS</string>
+            <string>VIRIDIS</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -254,7 +260,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_CIVIDIS</string>
+            <string>CIVIDIS</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -263,7 +269,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_TWILIGHT</string>
+            <string>TWILIGHT</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -272,7 +278,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_TWILIGHT_SHIFTED</string>
+            <string>TWILIGHT_SHIFTED</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -281,7 +287,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_TURBO</string>
+            <string>URBO</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -290,7 +296,7 @@
           </item>
           <item>
            <property name="text">
-            <string>COLORMAP_DEEPGREEN</string>
+            <string>DEEPGREEN</string>
            </property>
            <property name="icon">
             <iconset resource="../resource.qrc">
@@ -311,6 +317,11 @@
           <item>
            <property name="text">
             <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mean</string>
            </property>
           </item>
           <item>
