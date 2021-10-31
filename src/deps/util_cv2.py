@@ -19,8 +19,8 @@ def brightness(
     latest = 0  # 最新の平均輝度値
     coordinate = [0, 0]  # 最も明るい領域の座標値
 
-    for y in range(0, h, y_step):
-        for x in range(0, w, x_step):
+    for y in range(0, h - (y_step - 1), y_step):
+        for x in range(0, w - (x_step - 1), x_step):
 
             x0 = x + x_adjust
             y0 = y + y_adjust
@@ -28,11 +28,11 @@ def brightness(
             y1 = y + y_adjust + y_step
 
             roi = cv2_image[y0:y1, x0:x1]
-            f_mean = np.average(roi).astype("uint8")
+            f_mean = np.mean(roi).astype("uint8")
 
             if latest < f_mean:
                 latest = f_mean
-                coordinate = [x, y]
+                coordinate = [x0, y0]
             else:
                 pass
 

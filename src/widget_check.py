@@ -100,9 +100,6 @@ class CWidget(QtWidgets.QWidget):
                     target_image, (px, py), w // 10, (0, 0, 255), (w // 100)
                 )
 
-            elif self.ui.combo_brightness.currentText() == "Brightness":
-                target_image = im_gray
-
         alpha = self.ui.slider_transparent.value() / 100.0
 
         self.view.dst_image_data.set_image(cv2_image_heatmap, color_order=color_order)
