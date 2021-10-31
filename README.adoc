@@ -6,6 +6,24 @@
 
 - https://speakerdeck.com/hirosaji/the-art-of-reading-illustrations
 
+== 環境構築
+
+=== macOS
+
+pyenvの場合は以下の様に環境を作成してください。
+
+[source,zsh]
+----
+pyenv install 3.8.12
+pyenv global 3.8.12
+
+python setup_mac.py build
+----
+
+pyenvでインストールした場合、いくつか問題が生じる事があります。
+
+
+
 == 動作確認について
 
 動作確認は、Python 3.8.12で行っています。

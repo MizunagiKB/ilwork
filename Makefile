@@ -24,6 +24,8 @@ clean:
 run: all
 	$(PYTHON) src/ilwork.py
 
+# required py2app
+# alias mode only
 .PHONY: build
 build: all
-	pushd src && python setup.py py2app -A && popd
+	pushd src && python setup_mac.py py2app --alias && popd
