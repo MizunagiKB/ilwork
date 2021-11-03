@@ -45,7 +45,7 @@ class CLayerProperty(object):
             _color.blue() * self.COLOR_MUL,
         )
         self.m_pen.setColor(self.pin_color)
-        self.m_pin_pen.setColor(Qt.QColor(255, 255, 255))
+        self.m_pin_pen.setColor(Qt.QColorConstants.White)
         self.m_brush.setColor(self.color)
         self.m_pin_brush.setColor(self.pin_color)
 
@@ -134,16 +134,12 @@ class CWidget(QtWidgets.QWidget):
 
         self.watershed()
 
-        # self.view.pixmap_group.event_reciever = self
         self.view.pix_item.event_reciever = self
 
     def custom_term(self):
-        # self.view.pixmap_group.event_reciever = None
         self.view.pix_item.event_reciever = None
 
     def custom_mousePressEvent(self, event) -> bool:
-        # print("mousePressEvent", event)
-
         if event.button() == QtCore.Qt.LeftButton:
             o_layer = self.get_current_layer()
             self.append_pin(o_layer, event.pos())
@@ -198,7 +194,6 @@ class CWidget(QtWidgets.QWidget):
                     )
                     layer_data.set_color(color)
 
-                    # self.evt_current_item_changed(layer_item, layer_item)
                     self.update_color()
                     self.update_pin()
                     self.watershed()
