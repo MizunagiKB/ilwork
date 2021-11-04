@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from numpy import result_type
 
 import ui.frm_potrace
 
@@ -46,7 +47,9 @@ class CWidget(QtWidgets.QWidget):
 
     def evt_trace(self):
 
-        _, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+        result, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+        if result is False:
+            return
 
         blacklevel = (
             self.ui.slider_blacklevel.value() / self.ui.slider_blacklevel.maximum()

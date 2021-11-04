@@ -70,11 +70,15 @@ class CWidget(QtWidgets.QWidget):
 
         color_order = image_data.COLOR_ORDER_BGR
 
-        _, cv2_image = self.view.src_image_data.get_image(
+        result, cv2_image = self.view.src_image_data.get_image(
             image_data.IMAGE_TYPE_OPENCV, color_order=color_order
         )
+        if result is False:
+            return
 
-        _, saliency_map = saliency.computeSaliency(cv2_image)
+        result, saliency_map = saliency.computeSaliency(cv2_image)
+        if result is False:
+            return
 
         im_gray = (saliency_map * 255).astype("uint8")
 
@@ -107,7 +111,9 @@ class CWidget(QtWidgets.QWidget):
 
     def evt_kmean(self):
 
-        _, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+        result, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+        if result is False:
+            return
 
         img3groups = pil_image.convert("L").quantize(
             colors=self.ui.spinbox_colors.value(), kmeans=100
@@ -129,7 +135,9 @@ class CWidget(QtWidgets.QWidget):
         if self.model is None:
             self.model = VGG16()
 
-        _, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+        result, pil_image = self.view.src_image_data.get_image(image_data.IMAGE_TYPE_PIL)
+        if result is False:
+            return
 
         export_image = nnabla_gradcam(self.model, pil_image)
 
