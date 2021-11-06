@@ -154,8 +154,8 @@
    <addaction name="ac_image_dst"/>
    <addaction name="separator"/>
    <addaction name="ac_zoom_reset"/>
-   <addaction name="ac_zoom_out"/>
-   <addaction name="ac_zoom_in"/>
+   <addaction name="ac_view_zoom_out"/>
+   <addaction name="ac_view_zoom_in"/>
   </widget>
   <action name="ac_potrace">
    <property name="checkable">
@@ -240,8 +240,11 @@
    <property name="toolTip">
     <string>FileNew</string>
    </property>
+   <property name="statusTip">
+    <string/>
+   </property>
   </action>
-  <action name="ac_zoom_in">
+  <action name="ac_view_zoom_in">
    <property name="icon">
     <iconset resource="../resource.qrc">
      <normaloff>:/icons/res/search-plus-solid.svg</normaloff>:/icons/res/search-plus-solid.svg</iconset>
@@ -252,8 +255,11 @@
    <property name="toolTip">
     <string>ZoomIn</string>
    </property>
+   <property name="statusTip">
+    <string>ZoomIn</string>
+   </property>
   </action>
-  <action name="ac_zoom_out">
+  <action name="ac_view_zoom_out">
    <property name="icon">
     <iconset resource="../resource.qrc">
      <normaloff>:/icons/res/search-minus-solid.svg</normaloff>:/icons/res/search-minus-solid.svg</iconset>
@@ -262,6 +268,9 @@
     <string>ZoomOut</string>
    </property>
    <property name="toolTip">
+    <string>ZoomOut</string>
+   </property>
+   <property name="statusTip">
     <string>ZoomOut</string>
    </property>
   </action>

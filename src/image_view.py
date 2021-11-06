@@ -79,8 +79,8 @@ class CView(QtWidgets.QGraphicsView):
         self.__main_window.ui.ac_image_dst.triggered.connect(self.evt_image_dst)
 
         self.__main_window.ui.ac_zoom_reset.triggered.connect(self.evt_zoom_reset)
-        self.__main_window.ui.ac_zoom_out.triggered.connect(self.evt_zoom_out)
-        self.__main_window.ui.ac_zoom_in.triggered.connect(self.evt_zoom_in)
+        self.__main_window.ui.ac_view_zoom_out.triggered.connect(self.evt_view_zoom_out)
+        self.__main_window.ui.ac_view_zoom_in.triggered.connect(self.evt_view_zoom_in)
 
         self.__src_image_data = image_data.CImageData()
         self.__dst_image_data = image_data.CImageData()
@@ -145,10 +145,10 @@ class CView(QtWidgets.QGraphicsView):
     def evt_zoom_reset(self):
         self.resetTransform()
 
-    def evt_zoom_in(self):
+    def evt_view_zoom_in(self):
         self.scale(2.0, 2.0)
 
-    def evt_zoom_out(self):
+    def evt_view_zoom_out(self):
         self.scale(0.5, 0.5)
 
     def clear_pixmap(self):
@@ -241,8 +241,8 @@ class CView(QtWidgets.QGraphicsView):
 
         enabled = any([check_src, check_dst])
         self.__main_window.ui.ac_zoom_reset.setEnabled(enabled)
-        self.__main_window.ui.ac_zoom_out.setEnabled(enabled)
-        self.__main_window.ui.ac_zoom_in.setEnabled(enabled)
+        self.__main_window.ui.ac_view_zoom_out.setEnabled(enabled)
+        self.__main_window.ui.ac_view_zoom_in.setEnabled(enabled)
 
         self.__main_window.ui.ac_image_src.setEnabled(enabled)
         self.__main_window.ui.ac_image_dst.setEnabled(enabled)

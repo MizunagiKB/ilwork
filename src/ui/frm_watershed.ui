@@ -16,13 +16,10 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::ExpandingFieldsGrow</enum>
-     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Transparent</string>
+        <string>Ovarlap ratio</string>
        </property>
       </widget>
      </item>
@@ -128,19 +125,15 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="group_layer_property">
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="statusTip">
+      <string>Area property</string>
+     </property>
      <property name="title">
-      <string>LayerProperties</string>
+      <string>Area property</string>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <property name="fieldGrowthPolicy">
@@ -148,6 +141,9 @@
       </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
+        <property name="statusTip">
+         <string>Name of fill area</string>
+        </property>
         <property name="text">
          <string>Name</string>
         </property>
@@ -162,6 +158,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
+        <property name="statusTip">
+         <string>Color of the fill area (Red)</string>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -179,6 +178,9 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
+        <property name="statusTip">
+         <string>Color of the fill area (Green)</string>
+        </property>
         <property name="text">
          <string>G</string>
         </property>
@@ -196,6 +198,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_4">
+        <property name="statusTip">
+         <string>Color of the fill area (Blue)</string>
+        </property>
         <property name="text">
          <string>B</string>
         </property>

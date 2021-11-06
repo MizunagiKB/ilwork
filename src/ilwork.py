@@ -129,7 +129,16 @@ class CMainWindow(QtWidgets.QMainWindow):
 
 def main():
     instance = QtWidgets.QApplication(sys.argv)
+
     if instance is not None:
+
+        for locale_text in QtCore.QLocale().uiLanguages():
+            translator = QtCore.QTranslator()
+            res = translator.load("ilwork_{:s}.qm".format(locale_text))
+            if res is True:
+                instance.installTranslator(translator)
+                break
+
         o_main = CMainWindow()
         o_main.show()
 

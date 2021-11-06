@@ -14,13 +14,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(448, 444)
+        Form.resize(448, 447)
         Form.setMinimumSize(QtCore.QSize(0, 0))
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.formLayout_2 = QtWidgets.QFormLayout()
-        self.formLayout_2.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        self.formLayout_2.setRowWrapPolicy(QtWidgets.QFormLayout.DontWrapRows)
         self.formLayout_2.setObjectName("formLayout_2")
         self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setObjectName("label_3")
@@ -202,6 +200,8 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
         self.groupBox_3.setSizePolicy(sizePolicy)
+        self.groupBox_3.setFlat(False)
+        self.groupBox_3.setCheckable(False)
         self.groupBox_3.setObjectName("groupBox_3")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -217,7 +217,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "check"))
-        self.label_3.setText(_translate("Form", "Transparent"))
+        self.label_3.setStatusTip(_translate("Form", "Ovarlap ratio"))
+        self.label_3.setText(_translate("Form", "Ovarlap ratio"))
         self.groupBox_2.setTitle(_translate("Form", "OpenCV/Saliency"))
         self.push_saliency_sr.setText(_translate("Form", "SpectralResidual"))
         self.push_saliency_fg.setText(_translate("Form", "FineGrained"))

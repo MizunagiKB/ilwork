@@ -83,14 +83,18 @@ class CWidget(QtWidgets.QWidget):
             im_gray, self.ui.combo_colormap.currentIndex()
         )
 
-        if self.ui.combo_brightness.currentText() != "None":
+        NONE = 0
+        MEAN = 1
+        MARK = 2
+
+        if self.ui.combo_brightness.currentIndex() != NONE:
             h, w = cv2_image.shape[:2]
             px, py, image_mean = deps.util_cv2.brightness(im_gray)
 
-            if self.ui.combo_brightness.currentText() == "Mean":
+            if self.ui.combo_brightness.currentIndex() == MEAN:
                 cv2_image_heatmap = image_mean
 
-            if self.ui.combo_brightness.currentText() == "Mark":
+            if self.ui.combo_brightness.currentIndex() == MARK:
                 target_image = cv2_image_heatmap
 
                 cv2_image_heatmap = cv2.circle(

@@ -28,4 +28,5 @@ run: all
 # alias mode only
 .PHONY: build
 build: all
+	lupdate -pro ilwork.pro -ts ilwork_ja-JP.ts
 	pushd src && python setup_mac.py py2app --alias && popd
