@@ -22,11 +22,10 @@ clean:
 
 .PHONY: run
 run: all
-	$(PYTHON) src/ilwork.py
+	pushd src && $(PYTHON) ilwork.py && popd
 
-# required py2app
-# alias mode only
 .PHONY: build
 build: all
 	lupdate -pro ilwork.pro -ts src/lang/ilwork_ja-JP.ts
-	pushd src && python setup_mac.py py2app --alias && popd
+	pushd src && python setup.py build && popd
+	pushd src && python setup_post.py && popd

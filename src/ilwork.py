@@ -1,4 +1,5 @@
 import sys
+import os
 from typing import Dict
 from PyQt5 import QtCore, QtWidgets
 
@@ -134,7 +135,11 @@ def main():
 
         for locale_text in QtCore.QLocale().uiLanguages():
             translator = QtCore.QTranslator()
-            res = translator.load("src/lang/ilwork_{:s}.qm".format(locale_text))
+
+            dir_name, _ = os.path.split(sys.argv[0])
+            dir_name = os.path.join(dir_name, "lang")
+            qm_pathname = os.path.join(dir_name, "ilwork_{:s}.qm".format(locale_text))
+            res = translator.load(qm_pathname)
             if res is True:
                 instance.installTranslator(translator)
                 break

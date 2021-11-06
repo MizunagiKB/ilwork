@@ -21,7 +21,7 @@
     <message>
         <location filename="../ui/frm_check.ui" line="81"/>
         <source>FineGrained</source>
-        <translation type="unfinished">細流度</translation>
+        <translation type="unfinished">細粒度</translation>
     </message>
     <message>
         <location filename="../ui/frm_check.ui" line="96"/>
