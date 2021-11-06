@@ -22,9 +22,16 @@ def main():
         dst_path = "build/exe.macosx-{:s}-{:s}-{:d}.{:d}/lib".format(
             os_version, os_machine, sys.version_info.major, sys.version_info.minor
         )
-        copy_module(cv2.__path__[0], dst_path, "cv2")
-        copy_module(nnabla.__path__[0], dst_path, "nnabla")
-        copy_module(nnabla_ext.__path__[0], dst_path, "nnabla_ext")
+    elif platform.system() == "Windows":
+        dst_path = "build/exe.win-{:s}-{:d}.{:d}/lib".format(
+            platform.machine().lower(), sys.version_info.major, sys.version_info.minor
+        )
+    else:
+        return
+
+    copy_module(cv2.__path__[0], dst_path, "cv2")
+    copy_module(nnabla.__path__[0], dst_path, "nnabla")
+    copy_module(nnabla_ext.__path__[0], dst_path, "nnabla_ext")
 
 
 if __name__ == "__main__":
