@@ -134,7 +134,7 @@ def main():
 
         for locale_text in QtCore.QLocale().uiLanguages():
             translator = QtCore.QTranslator()
-            res = translator.load("ilwork_{:s}.qm".format(locale_text))
+            res = translator.load("src/lang/ilwork_{:s}.qm".format(locale_text))
             if res is True:
                 instance.installTranslator(translator)
                 break
