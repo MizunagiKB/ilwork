@@ -7,7 +7,19 @@ base = None
 BUILD_EXE_OPTIONS = {
     "packages": ["cv2", "nnabla"],
     "includes": [],
-    "excludes": ["tkinter"],
+    "excludes": [
+        "asyncio",
+        "boto3",
+        "botocore",
+        "curses",
+        "Cython",
+        "distutils",
+        "lib2to3",
+        "multiprocessing",
+        "setuptools",
+        "tkinter",
+        "unittest",
+    ],
     "include_files": [("lang/ilwork_ja-JP.qm", "lang/ilwork_ja-JP.qm")],
     "include_msvcr": True,
 }
