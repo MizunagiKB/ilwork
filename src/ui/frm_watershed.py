@@ -33,7 +33,7 @@ class Ui_Form(object):
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.slider_transparent)
         self.verticalLayout.addLayout(self.formLayout)
         self.treewidget_layer = QtWidgets.QTreeWidget(Form)
-        self.treewidget_layer.setIconSize(QtCore.QSize(48, 16))
+        self.treewidget_layer.setIconSize(QtCore.QSize(16, 16))
         self.treewidget_layer.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
         self.treewidget_layer.setAutoExpandDelay(3)
         self.treewidget_layer.setAnimated(True)

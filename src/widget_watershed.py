@@ -1,4 +1,4 @@
-from typing import cast
+from typing import cast, List
 from PyQt5 import Qt, QtCore, QtGui, QtWidgets
 
 import cv2
@@ -9,28 +9,21 @@ import image_view
 import ui.frm_watershed
 
 DEFAULT_COLOR_LIST = [
-    Qt.QColor(0xFF, 0xFF, 0xFF),
-    Qt.QColor(0xFF, 0x00, 0x00),
-    Qt.QColor(0x00, 0xFF, 0x00),
-    Qt.QColor(0x00, 0x00, 0xFF),
+    Qt.QColorConstants.White,
+    Qt.QColorConstants.Red,
+    Qt.QColorConstants.Green,
+    Qt.QColorConstants.Blue,
 ]
 
 
 class CLayerProperty(object):
     color: Qt.QColor = None
-    pin_color: Qt.QColor = None
-
-    COLOR_MUL = 0.75
 
     def __init__(self, _color: Qt.QColor):
-        self.m_pen = QtGui.QPen()
-        self.m_pen.setStyle(QtCore.Qt.SolidLine)
 
         self.m_pin_pen = Qt.QPen()
         self.m_pin_pen.setStyle(QtCore.Qt.SolidLine)
-
-        self.m_brush = Qt.QBrush()
-        self.m_brush.setStyle(QtCore.Qt.SolidPattern)
+        self.m_pin_pen.setColor(Qt.QColorConstants.White)
 
         self.m_pin_brush = Qt.QBrush()
         self.m_pin_brush.setStyle(QtCore.Qt.SolidPattern)
@@ -39,15 +32,7 @@ class CLayerProperty(object):
 
     def set_color(self, _color: Qt.QColor):
         self.color = _color
-        self.pin_color = Qt.QColor(
-            _color.red() * self.COLOR_MUL,
-            _color.green() * self.COLOR_MUL,
-            _color.blue() * self.COLOR_MUL,
-        )
-        self.m_pen.setColor(self.pin_color)
-        self.m_pin_pen.setColor(Qt.QColorConstants.White)
-        self.m_brush.setColor(self.color)
-        self.m_pin_brush.setColor(self.pin_color)
+        self.m_pin_brush.setColor(self.color)
 
 
 class CGPinItem(QtWidgets.QGraphicsRectItem):
@@ -117,10 +102,10 @@ class CWidget(QtWidgets.QWidget):
                 o_layer.setData(0, QtCore.Qt.UserRole, None)
             else:
                 layer_prop = CLayerProperty(o_color)
-                o_layer.setText(1, "Layer%d" % (idx,))
+                o_layer.setText(1, "Area {:d}".format(idx))
                 o_layer.setData(0, QtCore.Qt.UserRole, layer_prop)
 
-                o_pixmap = QtGui.QPixmap(48, 16)
+                o_pixmap = QtGui.QPixmap(16, 16)
                 o_pixmap.fill(layer_prop.color)
                 o_layer.setIcon(0, QtGui.QIcon(o_pixmap))
 
@@ -149,6 +134,11 @@ class CWidget(QtWidgets.QWidget):
     def custom_mouseReleaseEvent(self, event) -> bool:
         pass
 
+    def keyPressEvent(self, evt: QtGui.QKeyEvent) -> None:
+
+        if evt.key() in (QtCore.Qt.Key_Delete, QtCore.Qt.Key_Backspace):
+            self.remove_pin()
+
     def evt_changed(self):
         alpha = self.ui.slider_transparent.value() / 100.0
         self.view.set_display(image_view.DISPLAY_DST, alpha)
@@ -156,6 +146,13 @@ class CWidget(QtWidgets.QWidget):
     def evt_current_item_changed(self, item_curr, item_prev):
 
         enable = False
+
+        for witem_area in self.iter_layer():
+            for witem_pin in self.iter_pin(witem_area):
+                _data = witem_pin.data(0, QtCore.Qt.UserRole)
+                if isinstance(_data, CGPinItem) is True:
+                    pin = cast(CGPinItem, _data)
+                    pin.setSelected(False)
 
         if item_curr is not None:
             _data = item_curr.data(0, QtCore.Qt.UserRole)
@@ -171,6 +168,10 @@ class CWidget(QtWidgets.QWidget):
                     self.ui.slider_b.setValue(layer_data.color.blue())
                     self.__disable_event = False
                     enable = True
+
+                elif isinstance(_data, CGPinItem) is True:
+                    pin = cast(CGPinItem, _data)
+                    pin.setSelected(True)
 
         self.ui.group_layer_property.setEnabled(enable)
 
@@ -257,15 +258,21 @@ class CWidget(QtWidgets.QWidget):
 
     def remove_pin(self):
 
+        list_remove_item: List[QtWidgets.QTreeWidgetItem] = []
+
         for item in self.ui.treewidget_layer.selectedItems():
-            data = item.data(0, QtCore.Qt.UserRole)
-            data.setParentItem(None)
-            self.view.scene().removeItem(data)
+            _data = item.data(0, QtCore.Qt.UserRole)
+            if isinstance(_data, CGPinItem) is True:
+                pin = cast(CGPinItem, _data)
+                pin.setParentItem(None)
+                self.view.scene().removeItem(pin)
 
-            item.setData(0, QtCore.Qt.UserRole, None)
+                item.setData(0, QtCore.Qt.UserRole, None)
 
-            o_layer = item.parent()
-            o_layer.removeChild(item)
+                list_remove_item.append(item)
+
+        for item in list_remove_item:
+            item.parent().removeChild(item)
 
         self.update_color()
         self.update_pin()
@@ -302,7 +309,7 @@ class CWidget(QtWidgets.QWidget):
             else:
                 list_color.append(layer_prop.color)
 
-                o_pixmap = QtGui.QPixmap(48, 16)
+                o_pixmap = QtGui.QPixmap(16, 16)
                 o_pixmap.fill(layer_prop.color)
                 o_layer.setIcon(0, QtGui.QIcon(o_pixmap))
 

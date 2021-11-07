@@ -15,7 +15,7 @@ def copy_module(src_path: str, dst_path: str, module_name: str):
     shutil.copytree(src_path, os.path.join(dst_path, module_name))
 
 
-def main():
+def main() -> int:
 
     if platform.system() == "Darwin":
         os_version, _, os_machine = platform.mac_ver()
@@ -27,12 +27,14 @@ def main():
             platform.machine().lower(), sys.version_info.major, sys.version_info.minor
         )
     else:
-        return
+        return -1
 
     copy_module(cv2.__path__[0], dst_path, "cv2")
     copy_module(nnabla.__path__[0], dst_path, "nnabla")
     copy_module(nnabla_ext.__path__[0], dst_path, "nnabla_ext")
 
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

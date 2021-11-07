@@ -51,7 +51,7 @@
     <widget class="QTreeWidget" name="treewidget_layer">
      <property name="iconSize">
       <size>
-       <width>48</width>
+       <width>16</width>
        <height>16</height>
       </size>
      </property>
